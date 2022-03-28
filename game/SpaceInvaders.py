@@ -4,8 +4,11 @@ import math
 from pygame import mixer
 import numpy as np
 from .state_qLearning import State
+import os
 
 
+def getURL(filename):
+    return os.path.dirname(__file__) + "/" + filename
 
 #encodes action as integer : 
 #0 : gauche
@@ -46,7 +49,7 @@ class SpaceInvaders():
         # Game Over
         self.game_over_font = pygame.font.Font('freesansbold.ttf', 64)
         
-        self.playerImage = pygame.image.load('data/spaceship.png')
+        self.playerImage = pygame.image.load(getURL('data/spaceship.png'))
         if (not state_type in SpaceInvaders.STATE_TYPES):
             raise AttributeError("Wrong attribute `state_type` : ", self.state_type)
         else :
@@ -73,7 +76,7 @@ class SpaceInvaders():
         self.invader_Xchange = []
         self.invader_Ychange = []
         for _ in range(SpaceInvaders.NO_INVADERS):
-            self.invaderImage.append(pygame.image.load('data/alien.png'))
+            self.invaderImage.append(pygame.image.load(getURL('data/alien.png')))
             self.invader_X.append(random.randint(64, 737))
             self.invader_Y.append(random.randint(30, 180))
             self.invader_Xchange.append(1.2)
@@ -82,7 +85,7 @@ class SpaceInvaders():
         # Bullet
         # rest - bullet is not moving
         # fire - bullet is moving
-        self.bulletImage = pygame.image.load('data/bullet.png')
+        self.bulletImage = pygame.image.load(getURL('data/bullet.png'))
         self.bullet_X = 0
         self.bullet_Y = 500
         self.bullet_Xchange = 0
