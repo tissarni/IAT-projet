@@ -16,12 +16,13 @@ from .state_qLearning import State
 #encodes state as np.array(np.array(pixels))
 
 class SpaceInvaders():
-    NO_INVADERS = 1
+    NO_INVADERS = 8
     STATE_TYPES = ['tabular', 'nn']
     
     def __init__(self, display : bool = False, state_type : str = "tabular"):
         # player
         self.display = display
+        self.na = 4
 
         # initializing pygame
         pygame.init()
@@ -167,7 +168,7 @@ class SpaceInvaders():
     
         self.tabular_state.update_state(self.invader_X, self.invader_Y, self.player_X)
 
-        return self.getState(), reward, is_done, {}
+        return self.getState(), reward, is_done
 
     def render(self):
         self.show_score(self.scoreX, self.scoreY)

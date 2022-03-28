@@ -169,7 +169,7 @@ while running:
         player_X = 750
 
     rgbarray = pygame.surfarray.array3d(screen)
-    print(np.asarray(rgbarray).sum())
+    # print(np.asarray(rgbarray).sum())
 
     player(player_X, player_Y)
     show_score(scoreX, scoreY)

@@ -49,8 +49,8 @@ class State():
 			if (zone_y=="farCloseZone"):
 				self.current_state[i][1]=3
 
-	def getData(self):
-		return (self.last_state, self.current_state)
+	def getData(self) -> str:
+		return str((self.last_state, self.current_state))
 
 	def getZone(self, s, player_x, invaders_i):
 		if (s=="x"):
