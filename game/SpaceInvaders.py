@@ -3,6 +3,9 @@ import random
 import math
 from pygame import mixer
 import numpy as np
+from .state_qLearning import State
+
+
 
 #encodes action as integer : 
 #0 : gauche
@@ -13,7 +16,7 @@ import numpy as np
 #encodes state as np.array(np.array(pixels))
 
 class SpaceInvaders():
-    NO_INVADERS = 8
+    NO_INVADERS = 1
     STATE_TYPES = ['tabular', 'nn']
     
     def __init__(self, display : bool = False, state_type : str = "tabular"):
@@ -53,7 +56,7 @@ class SpaceInvaders():
         if (self.state_type == "nn"):
             return pygame.surfarray.array3d(self.screen)
         elif (self.state_type == "tabular"):
-            return pygame.surfarray.array3d(self.screen)
+            return self.tabular_state.getData()
 
     def reset(self):
         self.score_val = 0
@@ -84,6 +87,8 @@ class SpaceInvaders():
         self.bullet_Xchange = 0
         self.bullet_Ychange = 3
         self.bullet_state = "rest"
+
+        self.tabular_state = State((self.player_X, self.player_Y), SpaceInvaders.NO_INVADERS)
 
         if self.display:
             self.render()
@@ -160,6 +165,8 @@ class SpaceInvaders():
         if self.display:
             self.render()
     
+        self.tabular_state.update_state(self.invader_X, self.invader_Y, self.player_X)
+
         return self.getState(), reward, is_done, {}
 
     def render(self):
