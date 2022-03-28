@@ -4,6 +4,14 @@ import math
 from pygame import mixer
 import numpy as np
 
+#encodes action as integer : 
+#0 : gauche
+#1 : droite
+#2 : shoot
+#3 : pass
+
+#encodes state as np.array(np.array(pixels))
+
 class SpaceInvaders():
     NO_INVADERS = 8
     STATE_TYPES = ['tabular', 'nn']
@@ -32,7 +40,7 @@ class SpaceInvaders():
         self.font = pygame.font.Font('freesansbold.ttf', 20)
 
         # Game Over
-        game_over_font = pygame.font.Font('freesansbold.ttf', 64)
+        self.game_over_font = pygame.font.Font('freesansbold.ttf', 64)
         
         self.playerImage = pygame.image.load('data/spaceship.png')
         if (not state_type in SpaceInvaders.STATE_TYPES):
@@ -164,11 +172,9 @@ class SpaceInvaders():
     def move_invader(self, x, y, i):
         self.screen.blit(self.invaderImage[i], (x, y))
 
-
     def move_bullet(self, x, y):
-        global bullet_state
         self.screen.blit(self.bulletImage, (x, y))
-        bullet_state = "fire"
+        self.bullet_state = "fire"
 
     def show_score(self, x, y):
         score = self.font.render("Points: " + str(self.score_val), True, (255,255,255))
