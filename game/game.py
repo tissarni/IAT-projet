@@ -164,7 +164,7 @@ while running:
 
     # restricting the spaceship so that it doesn't go out of screen
     if player_X <= 16:
-        player_X = 16;
+        player_X = 16
     elif player_X >= 750:
         player_X = 750
 
