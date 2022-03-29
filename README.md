@@ -1,7 +1,7 @@
 # IAT-projet
 Welcome in the github designed for the IAT-project 2022.
 
-##Setup
+## Setup
 
 1. Get the source code by cloning this github locally
 ```bash
@@ -13,3 +13,11 @@ cd IAT-projet
 ```bash
 pip3 install -r requirements.txt
 ```
+
+## Read the subject
+
+A LaTeX file subjet.pdf containing the walkthrough of the project is available.
+
+## Start coding !
+
+Gl & hf
