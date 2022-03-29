@@ -101,6 +101,7 @@ class SpaceInvaders():
 
     def step(self, action):
         is_done = False
+        reward = 0
 
         # RGB
         self.screen.fill((0, 0, 0))
@@ -145,7 +146,6 @@ class SpaceInvaders():
                 self.invader_Xchange[i] *= -1
                 self.invader_Y[i] += self.invader_Ychange[i]
             # Collision
-            reward = 0
             collision = self.isCollision(self.bullet_X, self.invader_X[i], self.bullet_Y, self.invader_Y[i])
             if collision:
                 reward = 1

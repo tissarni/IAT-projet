@@ -37,7 +37,6 @@ class QAgent():
         # Initialise la fonction de valeur Q
         self.Q = {}
 
-        self.env = env
         self.na = env.na
 
         # Paramètres de l'algorithme
@@ -98,11 +97,11 @@ class QAgent():
             # Sauvegarde et affiche les données d'apprentissage
             if n_episodes >= 0:
                 state = env.reset()
-                print("\r#> Ep. {}/{} Value {}".format(episode, n_episodes, self.Q[state][self.select_greedy_action(state)]), end =" ")
+                print("\r#> Ep. {}/{} epsilon {} Value {}".format(episode, n_episodes,  self.epsilon, self.Q[state][self.select_greedy_action(state)]), end =" ")
                 self.save_log(env, episode)
 
         # self.values.to_csv('partie_3/visualisation/logV.csv')
-        self.qvalues.to_csv('partie_3/visualisation/logQ.csv')
+        #self.qvalues.to_csv('partie_3/visualisation/logQ.csv')
 
     def updateQ(self, state, action, reward, next_state):
         """À COMPLÉTER!
@@ -136,6 +135,8 @@ class QAgent():
         :param state: L'état courant
         :return: L'action gourmande
         """
+        if not state in self.Q: 
+            return np.random.choice([0,1,2,3])
         mx = np.max(self.Q[state])
         # greedy action with random tie break
         return np.random.choice(np.where(self.Q[state] == mx)[0])
