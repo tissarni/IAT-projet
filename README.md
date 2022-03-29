@@ -14,6 +14,13 @@ cd IAT-projet
 pip3 install -r requirements.txt
 ```
 
+3. Play the game 
+```bash
+python3 run_game.py
+```
+
+You can move the ship using the keys ← et → of your keyboard and fire with space.
+
 ## Read the subject
 
 A LaTeX file subjet.pdf containing the walkthrough of the project is available.
