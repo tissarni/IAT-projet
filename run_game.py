@@ -7,8 +7,8 @@ from controller.random_agent import RandomAgent
 def main():
 
     game = SpaceInvaders(display=True, state_type="tabular")
-    controller = KeyboardController()
-    # controller = RandomAgent(game.na)
+    #controller = KeyboardController()
+    controller = RandomAgent(game.na)
  
     state = game.reset()
     while True:
