@@ -3,7 +3,6 @@ import random
 import math
 from pygame import mixer
 import numpy as np
-from .state_qLearning import State
 import os
 
 
