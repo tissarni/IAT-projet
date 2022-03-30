@@ -19,13 +19,15 @@ def getURL(filename):
 #encodes state as np.array(np.array(pixels))
 
 class SpaceInvaders():
-    NO_INVADERS = 1
-    STATE_TYPES = ['tabular', 'nn']
+
+    NO_INVADERS = 1 # Nombre d'aliens  
     
-    def __init__(self, display : bool = False, state_type : str = "tabular"):
+    def __init__(self, display : bool = False):
         # player
         self.display = display
-        self.na = 4
+        
+        # nombre d'actions (left, right, fire, no_action)
+        self.na = 4 
 
         # initializing pygame
         pygame.init()
@@ -48,25 +50,48 @@ class SpaceInvaders():
 
         # Game Over
         self.game_over_font = pygame.font.Font('freesansbold.ttf', 64)
-        
-        self.playerImage = pygame.image.load(getURL('data/spaceship.png'))
-        if (not state_type in SpaceInvaders.STATE_TYPES):
-            raise AttributeError("Wrong attribute `state_type` : ", self.state_type)
-        else :
-            self.state_type = state_type
-        self.reset()
 
+        self.playerImage = pygame.image.load(getURL('data/spaceship.png'))
+        self.reset()
     
+    def get_player_X(self) -> int:
+        return self.player_X
+
+    def get_player_Y(self) -> int:
+        return self.player_Y
+
+    def get_indavers_X(self) -> 'List[int]':
+        return self.invader_X
+
+    def get_indavers_Y(self) -> 'List[int]':
+        return self.invader_Y
+
+    def get_bullet_X(self) -> int:
+        return self.bullet_X
+
+    def get_bullet_Y(self) -> int:
+        return self.bullet_Y
+
+    def get_bullet_state(self) -> str:
+        """Projectile
+        - rest = bullet is not moving
+        - fire = bullet is moving
+        """
+        return self.bullet_state
+
     def full_image(self):
         return pygame.surfarray.array3d(self.screen)
-        
-    def getState(self):
-        if (self.state_type == "nn"):
-            return self.full_image()
-        elif (self.state_type == "tabular"):
-            return self.tabular_state.getData()
+
+    def get_state(self):
+        """ A COMPLETER AVEC VOTRE ETAT
+        Cette méthode doit renvoyer l'état du système comme vous aurez choisi de
+        le représenter. Vous pouvez utiliser les accesseurs ci-dessus pour cela. 
+        """
+        raise NotImplementedError()
 
     def reset(self):
+        """Reset the game at the initial state.
+        """
         self.score_val = 0
 
         self.player_X = 370
@@ -96,14 +121,15 @@ class SpaceInvaders():
         self.bullet_Ychange = 3
         self.bullet_state = "rest"
 
-        self.tabular_state = State((self.player_X, self.player_Y), SpaceInvaders.NO_INVADERS)
-
         if self.display:
             self.render()
     
-        return self.getState()
+        return self.get_state()
 
     def step(self, action):
+        """Execute une action et renvoir l'état suivant, la récompense perçue 
+        et un booléen indiquant si la partie est terminée ou non.
+        """
         is_done = False
         reward = 0
 
@@ -173,9 +199,7 @@ class SpaceInvaders():
         if self.display:
             self.render()
     
-        self.tabular_state.update_state(self.invader_X, self.invader_Y, self.player_X)
-
-        return self.getState(), reward, is_done
+        return self.get_state(), reward, is_done
 
     def render(self):
         self.show_score(self.scoreX, self.scoreY)
@@ -203,7 +227,4 @@ class SpaceInvaders():
     # Collision Concept
     def isCollision(self, x1, x2, y1, y2):
         distance = math.sqrt((math.pow(x1 - x2,2)) + (math.pow(y1 - y2,2)))
-        if distance <= 50:
-            return True
-        else:
-            return False
+        return (distance <= 50)

@@ -5,7 +5,7 @@ from controller.random_agent import RandomAgent
 
 def main():
 
-    game = SpaceInvaders(display=True, state_type="tabular")
+    game = SpaceInvaders(display=True)
     #controller = KeyboardController()
     controller = RandomAgent(game.na)
  
