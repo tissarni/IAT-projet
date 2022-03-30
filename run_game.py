@@ -1,7 +1,7 @@
 from time import sleep
 from epsilon_profile import EpsilonProfile
 from game.SpaceInvaders import SpaceInvaders
-from controller.KeyboardController import KeyboardController
+from controller.keyboard import KeyboardController
 from controller.random_agent import RandomAgent
 
 def main():
