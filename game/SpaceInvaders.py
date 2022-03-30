@@ -19,7 +19,7 @@ def getURL(filename):
 #encodes state as np.array(np.array(pixels))
 
 class SpaceInvaders():
-    NO_INVADERS = 8
+    NO_INVADERS = 1
     STATE_TYPES = ['tabular', 'nn']
     
     def __init__(self, display : bool = False, state_type : str = "tabular"):
@@ -55,10 +55,14 @@ class SpaceInvaders():
         else :
             self.state_type = state_type
         self.reset()
+
+    
+    def full_image(self):
+        return pygame.surfarray.array3d(self.screen)
         
     def getState(self):
         if (self.state_type == "nn"):
-            return pygame.surfarray.array3d(self.screen)
+            return self.full_image()
         elif (self.state_type == "tabular"):
             return self.tabular_state.getData()
 
