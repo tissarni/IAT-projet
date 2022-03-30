@@ -1,14 +1,14 @@
 from time import sleep
 from epsilon_profile import EpsilonProfile
 from game.SpaceInvaders import SpaceInvaders
-from controller.KeyboardController import KeyboardController
+from controller.keyboard import KeyboardController
 from controller.random_agent import RandomAgent
 
 def main():
 
     game = SpaceInvaders(display=True, state_type="tabular")
-    controller = KeyboardController()
-    # controller = RandomAgent(game.na)
+    #controller = KeyboardController()
+    controller = RandomAgent(game.na)
  
     state = game.reset()
     while True:
