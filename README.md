@@ -5,7 +5,7 @@ Welcome in the github designed for the IAT-project 2022.
 
 1. Get the source code by cloning this github locally
 ```bash
-https://github.com/aurelienDelageInsaLyon/IAT-projet
+git clone https://github.com/aurelienDelageInsaLyon/IAT-projet
 cd IAT-projet
 ```
 
