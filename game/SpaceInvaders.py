@@ -87,7 +87,7 @@ class SpaceInvaders():
         Cette méthode doit renvoyer l'état du système comme vous aurez choisi de
         le représenter. Vous pouvez utiliser les accesseurs ci-dessus pour cela. 
         """
-        raise NotImplementedError()
+        return "L'état n'est pas implémenté (SpaceInvaders.get_state)"
 
     def reset(self):
         """Reset the game at the initial state.
