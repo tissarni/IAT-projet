@@ -1,7 +1,9 @@
+from turtle import distance
 import pygame
 import random
 import math
 from pygame import mixer
+from game.data.epsilon_profile import EpsilonProfile
 import numpy as np
 import os
 
@@ -38,6 +40,7 @@ class SpaceInvaders():
             self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
         else:
             self.screen = pygame.display.set_mode((self.screen_width, self.screen_height), flags=pygame.HIDDEN)
+
 
         # caption and icon
         pygame.display.set_caption("Welcome to Space Invaders Game by:- styles")
@@ -81,16 +84,21 @@ class SpaceInvaders():
     def full_image(self):
         return pygame.surfarray.array3d(self.screen)
 
+
     def get_state(self):
-        """ A COMPLETER AVEC VOTRE ETAT
-        Cette méthode doit renvoyer l'état du système comme vous aurez choisi de
-        le représenter. Vous pouvez utiliser les accesseurs ci-dessus pour cela. 
-        """
-        return "L'état n'est pas implémenté (SpaceInvaders.get_state)"
+    
+        distanceX =  int((self.get_indavers_X()[0] - self.get_player_X()) / 10)
+        distanceY =  int((self.get_player_Y() - self.get_indavers_Y()[0]) / 100)
+        shooting = 0 
+        if self.get_bullet_state == "fire" : 
+            shooting = 1
+        state = (distanceX, distanceY, shooting)
+        return state
+        
+         
 
     def reset(self):
-        """Reset the game at the initial state.
-        """
+
         self.score_val = 0
 
         self.player_X = 370
@@ -107,7 +115,7 @@ class SpaceInvaders():
             self.invaderImage.append(pygame.image.load(getURL('data/alien.png')))
             self.invader_X.append(random.randint(64, 737))
             self.invader_Y.append(random.randint(30, 180))
-            self.invader_Xchange.append(1.2)
+            self.invader_Xchange.append(5)
             self.invader_Ychange.append(50)
 
         # Bullet
@@ -117,13 +125,15 @@ class SpaceInvaders():
         self.bullet_X = 0
         self.bullet_Y = 500
         self.bullet_Xchange = 0
-        self.bullet_Ychange = 3
+        self.bullet_Ychange = 15
         self.bullet_state = "rest"
 
         if self.display:
             self.render()
     
         return self.get_state()
+
+    
 
     def step(self, action):
         """Execute une action et renvoir l'état suivant, la récompense perçue 
@@ -136,13 +146,13 @@ class SpaceInvaders():
         self.screen.fill((0, 0, 0))
         # Controling the player movement from the arrow keys
         if action == 0: # GO LEFT
-            self.player_Xchange = -1.7
+            self.player_Xchange = -10
         if action == 1: # GO RIGHT
-            self.player_Xchange = 1.7
+            self.player_Xchange = 10
         if action == 2: # FIRE
             self.player_Xchange = 0
             # Fixing the change of direction of bullet
-            if self.bullet_state is "rest":
+            if self.bullet_state == "rest":
                 self.bullet_X = self.player_X
                 self.move_bullet(self.bullet_X, self.bullet_Y)
         if action == 3: # NO ACTION 
@@ -157,7 +167,7 @@ class SpaceInvaders():
         if self.bullet_Y <= 0:
             self.bullet_Y = 600
             self.bullet_state = "rest"
-        if self.bullet_state is "fire":
+        if self.bullet_state == "fire":
             self.move_bullet(self.bullet_X, self.bullet_Y)
             self.bullet_Y -= self.bullet_Ychange
     
@@ -165,15 +175,21 @@ class SpaceInvaders():
         for i in range(SpaceInvaders.NO_INVADERS):
             
             if self.invader_Y[i] >= 450:
-                if abs(self.player_X-self.invader_X[i]) < 80:
+                if abs(self.player_X-self.invader_X[i]) < 90:
                     for j in range(SpaceInvaders.NO_INVADERS):
-                        self.invader_Y[j] = 2000
+                        self.invader_Y[j] = 800
                     is_done = True
                     break
                 
             if self.invader_X[i] >= 735 or self.invader_X[i] <= 0:
                 self.invader_Xchange[i] *= -1
                 self.invader_Y[i] += self.invader_Ychange[i]
+
+            if self.invader_Y[i] > 800 or self.invader_Y[i] < 0:
+                self.invader_Ychange[i] -= -1
+                self.invader_Y[i] += self.invader_Ychange[i]
+
+                
             # Collision
             collision = self.isCollision(self.bullet_X, self.invader_X[i], self.bullet_Y, self.invader_Y[i])
             if collision:
