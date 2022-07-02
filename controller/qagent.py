@@ -9,9 +9,9 @@ import pandas as pd
 class QAgent(AgentInterface):
 
     def __init__(self, game: SpaceInvaders, eps_profile: EpsilonProfile, gamma: float, alpha: float):
-        
+
         # Initialise la fonction de valeur Q
-        self.Q = np.zeros([80, 6, 2, game.na])
+        self.Q = np.zeros([10, 10, 2, game.na])
 
         self.game = game
         self.na = game.na
@@ -30,14 +30,14 @@ class QAgent(AgentInterface):
         '''
 
     def learn(self, game, n_episodes, max_steps):
- 
+
         n_steps = np.zeros(n_episodes) + max_steps
-        
+
         # Execute N episodes 
         for episode in range(n_episodes):
             # Reinitialise l'environnement
             state = self.game.reset()
-            
+
             # Execute K steps 
             for step in range(max_steps):
                 # Selectionne une action 
@@ -46,9 +46,9 @@ class QAgent(AgentInterface):
                 next_state, reward, terminal = game.step(action)
                 # Mets à jour la fonction de valeur Q
                 self.updateQ(state, action, reward, next_state)
-                
+
                 if terminal:
-                    n_steps[episode] = step + 1  
+                    n_steps[episode] = step + 1
                     break
 
                 state = next_state
@@ -80,7 +80,7 @@ class QAgent(AgentInterface):
         else:
             a = self.select_greedy_action(state)
             return a
-       
+
 
     def select_greedy_action(self, state : 'Tuple[int, int, int, int]'):
         mx = np.max(self.Q[state])
