@@ -3,15 +3,16 @@ from controller import AgentInterface
 from epsilon_profile import EpsilonProfile
 from game.SpaceInvaders import SpaceInvaders
 import pandas as pd
+import os
 
 
 
 class QAgent(AgentInterface):
 
-    def __init__(self, game: SpaceInvaders, eps_profile: EpsilonProfile, gamma: float, alpha: float):
+    def __init__(self, game: SpaceInvaders, eps_profile: EpsilonProfile, gamma: float, alpha: float, fileLog="logQ"):
 
         # Initialise la fonction de valeur Q
-        self.Q = np.zeros([10, 10, 2, game.na])
+        self.Q = np.zeros([40, 12, 2, game.na])
 
         self.game = game
         self.na = game.na
@@ -23,11 +24,8 @@ class QAgent(AgentInterface):
         self.eps_profile = eps_profile
         self.epsilon = self.eps_profile.initial
 
-        # Visualisation des données (vous n'avez pas besoin de comprendre cette partie)
-        '''
-        self.qvalues = pd.DataFrame(data={'episode': [], 'value': []})
-        self.values = pd.DataFrame(data={'nx': [maze.nx], 'ny': [maze.ny]})
-        '''
+        self.qvalues = pd.DataFrame(data={'episode': [], 'score': []})
+        self.fileLog = fileLog
 
     def learn(self, game, n_episodes, max_steps):
 
@@ -36,7 +34,7 @@ class QAgent(AgentInterface):
         # Execute N episodes 
         for episode in range(n_episodes):
             # Reinitialise l'environnement
-            state = self.game.reset()
+            state = game.reset()
 
             # Execute K steps 
             for step in range(max_steps):
@@ -58,8 +56,11 @@ class QAgent(AgentInterface):
             # Sauvegarde et affiche les données d'apprentissage
             if n_episodes >= 0:
                 state = game.reset()
-                print("\r#> Ep. {}/{} Value {}".format(episode, n_episodes, self.Q[state][self.select_greedy_action(state)]), end =" ")
-                self.save_log(self.game, episode)
+                print("\r#> Ep. {}/{} Step {}/{} Q sum {}".format(episode, n_episodes, step, max_steps, np.sum(self.Q)), end =" ")
+                self.save_log(game, episode)
+                state=game.reset()
+
+        self.qvalues.to_csv('visualisation/qFunction.csv')
 
 
     def updateQ(self, state : 'Tuple[int, int, int]', action : int, reward : float, next_state : 'Tuple[int, int, int]'):
@@ -88,16 +89,13 @@ class QAgent(AgentInterface):
         return np.random.choice(np.where(self.Q[state] == mx)[0])
 
     def save_log(self, game, episode):
-        '''
-        state = game.reset()
-        # Construit la fonction de valeur d'état associée à Q
-        V = np.zeros((int(game.ny), int(self.maze.nx)))
-        for state in self.maze.getStates():
-            val = self.Q[state][self.select_action(state)]
-            V[state] = val
-        state = game.reset()
+        self.qvalues = self.qvalues.append(
+            {
+                'episode': episode,
+                'score': game.getScore()
+            },
+            ignore_index=True)
 
-        self.qvalues = self.qvalues.append({'episode': episode, 'value': self.Q[state][self.select_greedy_action(state)]}, ignore_index=True)
-        self.values = self.values.append({'episode': episode, 'value': np.reshape(V,(1, self.maze.ny*self.maze.nx))[0]},ignore_index=True)
 
-        '''
+    def saveQToFile(self, file):
+        np.save(file, self.Q)

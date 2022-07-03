@@ -45,12 +45,13 @@ class SpaceInvaders():
         self.scoreX = 5
         self.scoreY = 5
         self.font = pygame.font.Font('freesansbold.ttf', 20)
+        self.score_val = 0
 
         # Game Over
         self.game_over_font = pygame.font.Font('freesansbold.ttf', 64)
 
         self.playerImage = pygame.image.load(getURL('data/spaceship.png'))
-        self.reset()
+
 
     def get_player_X(self) -> int:
         return self.player_X
@@ -81,11 +82,22 @@ class SpaceInvaders():
         return pygame.surfarray.array3d(self.screen)
 
     def get_state(self):
+        player_x = self.get_player_X()
+        player_y = self.get_player_Y()
+        invaders_x = self.get_indavers_X()
+        invaders_y = self.get_indavers_Y()
 
-        distance_x = int((self.get_player_X() - self.get_indavers_X()[0]) % 10)
-        distance_y = int((self.get_player_Y() - self.get_indavers_Y()[0]) % 10)
+
+        if invaders_y[0] > self.screen_height:
+            invaders_y[0] = self.screen_height - 1
+
+
+        if invaders_x[0] > self.screen_width:
+            invaders_x[0] = self.screen_width - 1
+        
+        distance_x = int((player_x - invaders_x[0]) / 20)
+        distance_y = int((player_y - invaders_y[0]) / 50)
         shooting = int(self.get_bullet_state == "fire")
-
         state = (distance_x, distance_y, shooting)
         return state
 
@@ -227,3 +239,7 @@ class SpaceInvaders():
     def isCollision(self, x1, x2, y1, y2):
         distance = math.sqrt((math.pow(x1 - x2, 2)) + (math.pow(y1 - y2, 2)))
         return (distance <= 50)
+
+
+    def getScore(self):
+        return self.score_val
