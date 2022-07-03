@@ -1,11 +1,13 @@
+import os
+from sys import argv
+from time import time
+
 from controller import AgentInterface
 from controller.qagent import QAgent
+from controller.random_agent import RandomAgent
 from epsilon_profile import EpsilonProfile
 from game.SpaceInvaders import SpaceInvaders
-from controller.random_agent import RandomAgent
-import os
-from time import time
-from sys import argv
+
 
 def test(game: SpaceInvaders, agent: AgentInterface, nepisodes: int, same=True, display=False):
     sum_rewards = 0.
