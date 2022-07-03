@@ -24,7 +24,7 @@ def test(game: SpaceInvaders, agent: AgentInterface, nepisodes: int, same=True, 
 
 
 if __name__ == '__main__':
-    if len(argv) < 10:
+    if len(argv) < 11:
         n_episodes = int(argv[1])
         max_steps = int(argv[2])
         final_episode = int(argv[3])
@@ -32,11 +32,11 @@ if __name__ == '__main__':
         alpha = float(argv[5])
         eps_profile = EpsilonProfile(float(argv[6]), float(argv[7]))
         sampling = int(argv[8])
+        fileName = str(argv[9])
     else:
-        print('\n\nUsage: python3 run_game.py <n_epispdes> <max_steps> <final_episode> <gamma> <alpha> <eps_begin> <eps_end> <sampling>\n')
+        print('\n\nUsage: python3 run_game.py <n_epispdes> <max_steps> <final_episode> <gamma> <alpha> <eps_begin> <eps_end> <sampling> <fileName>\n')
         exit(1)
 
-    fileName = "qFunction"
 
 
     game = SpaceInvaders(sampling, display=False)
