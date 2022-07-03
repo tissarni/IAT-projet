@@ -20,7 +20,7 @@ def getURL(filename):
 class SpaceInvaders():
     NO_INVADERS = 10  # Nombre d'aliens
 
-    def __init__(self, display: bool = False):
+    def __init__(self, sampling : int, display: bool = False):
         # player
         self.display = display
 
@@ -51,6 +51,8 @@ class SpaceInvaders():
         self.game_over_font = pygame.font.Font('freesansbold.ttf', 64)
 
         self.playerImage = pygame.image.load(getURL('data/spaceship.png'))
+
+        self.sampling = sampling
 
 
     def get_player_X(self) -> int:
@@ -95,8 +97,8 @@ class SpaceInvaders():
         if invaders_x[self.getLowerInvader()] > self.screen_width:
             invaders_x[self.getLowerInvader()] = self.screen_width - 1
         
-        distance_x = int((player_x - invaders_x[self.getLowerInvader()]) / 20)
-        distance_y = int((player_y - invaders_y[self.getLowerInvader()]) / 50)
+        distance_x = int((player_x - invaders_x[self.getLowerInvader()]) / self.sampling)
+        distance_y = int((player_y - invaders_y[self.getLowerInvader()]) / self.sampling)
         shooting = int(self.get_bullet_state == "fire")
         state = (distance_x, distance_y, shooting)
         return state

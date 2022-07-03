@@ -4,7 +4,7 @@ from epsilon_profile import EpsilonProfile
 from game.SpaceInvaders import SpaceInvaders
 from controller.random_agent import RandomAgent
 import os
-from time import sleep, time
+from time import time
 from sys import argv
 
 def test(game: SpaceInvaders, agent: AgentInterface, nepisodes: int, same=True, display=False):
@@ -24,21 +24,22 @@ def test(game: SpaceInvaders, agent: AgentInterface, nepisodes: int, same=True, 
 
 
 if __name__ == '__main__':
-    if len(argv) > 7:
+    if len(argv) < 8:
         n_episodes = int(argv[1])
         max_steps = int(argv[2])
         final_episode = int(argv[3])
         gamma = float(argv[4])
         alpha = float(argv[5])
         eps_profile = EpsilonProfile(float(argv[6]), float(argv[7]))
+        sampling = int(argv[8])
     else:
-        print('\n\nUsage: python3 run_game.py <n_epispdes> <max_steps> <final_episode> <gamma> <alpha> <eps_begin> <eps_end>\n')
+        print('\n\nUsage: python3 run_game.py <n_epispdes> <max_steps> <final_episode> <gamma> <alpha> <eps_begin> <eps_end> <sampling>\n')
         exit(1)
 
     fileName = "qFunction"
 
 
-    game = SpaceInvaders(display=False)
+    game = SpaceInvaders(sampling, display=False)
     controller = RandomAgent(game.na)
     state = game.reset()
     random_score = 0
@@ -53,7 +54,7 @@ if __name__ == '__main__':
     print('Joueur random avant apprentissage - score moyen : {}'.format(random_score / final_episode))
 
     
-    agent = QAgent(game, eps_profile, gamma, alpha, fileName)
+    agent = QAgent(game, eps_profile, gamma, alpha, sampling, fileName)
 
 
     startTime = time()
@@ -65,6 +66,7 @@ if __name__ == '__main__':
     print(
         "############################################################################"
     )
+    print("    sampling: ", sampling)
     print("    n_episodes: ", n_episodes)
     print("    max_steps: ", max_steps)
     print("    gamma: ", gamma)

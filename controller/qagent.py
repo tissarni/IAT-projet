@@ -9,10 +9,10 @@ import os
 
 class QAgent(AgentInterface):
 
-    def __init__(self, game: SpaceInvaders, eps_profile: EpsilonProfile, gamma: float, alpha: float, fileLog="logQ"):
+    def __init__(self, game: SpaceInvaders, eps_profile: EpsilonProfile, gamma: float, alpha: float, sampling : int, fileLog="logQ"):
 
         # Initialise la fonction de valeur Q
-        self.Q = np.zeros([40, 12, 2, game.na])
+        self.Q = np.zeros([int(800/sampling), int(600/sampling), 2, game.na])
 
         self.game = game
         self.na = game.na
