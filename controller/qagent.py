@@ -9,7 +9,7 @@ import os
 
 class QAgent(AgentInterface):
 
-    def __init__(self, game: SpaceInvaders, eps_profile: EpsilonProfile, gamma: float, alpha: float, sampling : int, fileLog="logQ"):
+    def __init__(self, game: SpaceInvaders, eps_profile: EpsilonProfile, gamma: float, alpha: float, sampling : int, fileLog : str):
 
         # Initialise la fonction de valeur Q
         self.Q = np.zeros([int(800/sampling), int(600/sampling), 2, game.na])
@@ -60,7 +60,7 @@ class QAgent(AgentInterface):
                 self.save_log(episode)
                 state=game.reset()
 
-        self.qvalues.to_csv('visualisation/qFunction.csv')
+        self.qvalues.to_csv('visualisation/' + self.fileLog + '.csv')
 
 
     def updateQ(self, state : 'Tuple[int, int, int]', action : int, reward : float, next_state : 'Tuple[int, int, int]'):

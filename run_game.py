@@ -34,7 +34,7 @@ if __name__ == '__main__':
         sampling = int(argv[8])
         fileName = str(argv[9])
     else:
-        print('\n\nUsage: python3 run_game.py <n_epispdes> <max_steps> <final_episode> <gamma> <alpha> <eps_begin> <eps_end> <sampling> <fileName>\n')
+        print('\n\nUsage: python3 run_game.py <n_episodes> <max_steps> <final_episode> <gamma> <alpha> <eps_begin> <eps_end> <sampling> <fileName>\n')
         exit(1)
 
 
