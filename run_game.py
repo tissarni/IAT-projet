@@ -24,7 +24,6 @@ def test(game: SpaceInvaders, agent: AgentInterface, nepisodes: int, same=True, 
     return sum_rewards
 
 
-
 if __name__ == '__main__':
     if len(argv) < 11:
         n_episodes = int(argv[1])
@@ -36,17 +35,17 @@ if __name__ == '__main__':
         sampling = int(argv[8])
         fileName = str(argv[9])
     else:
-        print('\n\nUsage: python3 run_game.py <n_episodes> <max_steps> <final_episode> <gamma> <alpha> <eps_begin> <eps_end> <sampling> <fileName>\n')
+        print(
+            '\n\nUsage: python3 run_game.py <n_episodes> <max_steps> <final_episode> <gamma> <alpha> <eps_begin> '
+            '<eps_end> <sampling> <fileName>\n')
         exit(1)
-
-
 
     game = SpaceInvaders(sampling, display=False)
     controller = RandomAgent(game.na)
     state = game.reset()
     random_score = 0
     is_done = False
-    
+
     for _ in range(final_episode):
         while not is_done:
             action = controller.select_action(state)
@@ -55,19 +54,14 @@ if __name__ == '__main__':
 
     print('Joueur random avant apprentissage - score moyen : {}'.format(random_score / final_episode))
 
-    
     agent = QAgent(game, eps_profile, gamma, alpha, sampling, fileName)
-
 
     startTime = time()
     agent.learn(game, n_episodes, max_steps)
     endTime = time()
     agent.saveQToFile(os.path.join(fileName))
-    
 
-    print(
-        "############################################################################"
-    )
+    print("###################################")
     print("    sampling: ", sampling)
     print("    n_episodes: ", n_episodes)
     print("    max_steps: ", max_steps)
@@ -76,12 +70,8 @@ if __name__ == '__main__':
     print("    eps_profile (initial, final, dec_episode, dec_step): ",
           eps_profile.initial, eps_profile.final, eps_profile.dec_episode,
           eps_profile.dec_step)
-    print ("Durée de l'apprentissage : " + str(endTime - startTime))
-    print(
-        "############################################################################"
-    )
+    print("Durée de l'apprentissage : " + str(endTime - startTime))
+    print("###################################")
 
     rewards = test(game, agent, final_episode, display=False)
-    print("Score moyen après entrainement : {}".format(rewards/final_episode))
-
-
+    print("Score moyen après entrainement : {}".format(rewards / final_episode))
