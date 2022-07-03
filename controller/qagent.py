@@ -3,7 +3,6 @@ from controller import AgentInterface
 from epsilon_profile import EpsilonProfile
 from game.SpaceInvaders import SpaceInvaders
 import pandas as pd
-import os
 
 
 
