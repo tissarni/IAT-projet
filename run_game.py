@@ -24,7 +24,7 @@ def test(game: SpaceInvaders, agent: AgentInterface, nepisodes: int, same=True, 
 
 
 if __name__ == '__main__':
-    if len(argv) < 8:
+    if len(argv) < 10:
         n_episodes = int(argv[1])
         max_steps = int(argv[2])
         final_episode = int(argv[3])
