@@ -18,7 +18,7 @@ def getURL(filename):
 # encodes state as np.array(np.array(pixels))
 
 class SpaceInvaders():
-    NO_INVADERS = 1  # Nombre d'aliens
+    NO_INVADERS = 10  # Nombre d'aliens
 
     def __init__(self, display: bool = False):
         # player

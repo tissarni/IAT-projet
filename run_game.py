@@ -5,6 +5,7 @@ from game.SpaceInvaders import SpaceInvaders
 from controller.random_agent import RandomAgent
 import os
 from time import sleep, time
+from sys import argv
 
 def test(game: SpaceInvaders, agent: AgentInterface, nepisodes: int, same=True, display=False):
     sum_rewards = 0.
@@ -16,7 +17,6 @@ def test(game: SpaceInvaders, agent: AgentInterface, nepisodes: int, same=True, 
         while not terminal:
             action = agent.select_greedy_action(state)
             next_state, reward, terminal = game.step(action)
-
             sum_rewards += reward
             state = next_state
     return sum_rewards
@@ -24,12 +24,17 @@ def test(game: SpaceInvaders, agent: AgentInterface, nepisodes: int, same=True, 
 
 
 if __name__ == '__main__':
-    n_episodes = 500
-    max_steps = 1500
-    gamma = 0.95
-    alpha = 0.2
-    eps_profile = EpsilonProfile(1.0, 0)
-    final_episode = 10
+    if len(argv) > 7:
+        n_episodes = int(argv[1])
+        max_steps = int(argv[2])
+        final_episode = int(argv[3])
+        gamma = float(argv[4])
+        alpha = float(argv[5])
+        eps_profile = EpsilonProfile(float(argv[6]), float(argv[7]))
+    else:
+        print('\n\nUsage: python3 run_game.py <n_epispdes> <max_steps> <final_episode> <gamma> <alpha> <eps_begin> <eps_end>\n')
+        exit(1)
+
     fileName = "qFunction"
 
 
