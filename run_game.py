@@ -40,6 +40,17 @@ if __name__ == '__main__':
             '<eps_end> <sampling> <fileName>\n')
         exit(1)
 
+    print("############################ Current config ################################")
+    print("    sampling: ", sampling)
+    print("    n_episodes: ", n_episodes)
+    print("    max_steps: ", max_steps)
+    print("    gamma: ", gamma)
+    print("    alpha: ", alpha)
+    print("    eps_profile (initial, final, dec_episode, dec_step): ",
+          eps_profile.initial, eps_profile.final, eps_profile.dec_episode,
+          eps_profile.dec_step)
+    print("############################################################################")
+
     game = SpaceInvaders(sampling, display=False)
     controller = RandomAgent(game.na)
     state = game.reset()
@@ -55,13 +66,13 @@ if __name__ == '__main__':
     print('Joueur random avant apprentissage - score moyen : {}'.format(random_score / final_episode))
 
     agent = QAgent(game, eps_profile, gamma, alpha, sampling, fileName)
-
+    print("\n\n=> Beginning of the learning phase")
     startTime = time()
     agent.learn(game, n_episodes, max_steps)
     endTime = time()
     agent.saveQToFile(os.path.join(fileName))
 
-    print("###################################")
+    print("\n######################## Learning phase complete #########################")
     print("    sampling: ", sampling)
     print("    n_episodes: ", n_episodes)
     print("    max_steps: ", max_steps)
@@ -71,7 +82,10 @@ if __name__ == '__main__':
           eps_profile.initial, eps_profile.final, eps_profile.dec_episode,
           eps_profile.dec_step)
     print("Durée de l'apprentissage : " + str(endTime - startTime))
-    print("###################################")
+    print("############################################################################")
 
+    print("\n\n=> Beginning of test phase")
     rewards = test(game, agent, final_episode, display=False)
+    print("################# Test phase complete ##################")
     print("Score moyen après entrainement : {}".format(rewards / final_episode))
+    print("#########################################################")
