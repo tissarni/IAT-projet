@@ -24,8 +24,8 @@ def test(game: SpaceInvaders, agent: AgentInterface, nepisodes: int, same=True, 
 
 
 if __name__ == '__main__':
-    n_episodes = 10000
-    max_steps = 50
+    n_episodes = 500
+    max_steps = 1500
     gamma = 0.95
     alpha = 0.2
     eps_profile = EpsilonProfile(1.0, 0)
@@ -50,7 +50,6 @@ if __name__ == '__main__':
     
     agent = QAgent(game, eps_profile, gamma, alpha, fileName)
 
-   
 
     startTime = time()
     agent.learn(game, n_episodes, max_steps)

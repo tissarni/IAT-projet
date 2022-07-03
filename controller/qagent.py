@@ -44,6 +44,7 @@ class QAgent(AgentInterface):
                 next_state, reward, terminal = game.step(action)
                 # Mets à jour la fonction de valeur Q
                 self.updateQ(state, action, reward, next_state)
+                print("\r#> Episode {}/{} Step {}/{} Q sum {}".format(episode, n_episodes, step, max_steps, np.sum(self.Q)), end =" ")
 
                 if terminal:
                     n_steps[episode] = step + 1
@@ -56,8 +57,7 @@ class QAgent(AgentInterface):
             # Sauvegarde et affiche les données d'apprentissage
             if n_episodes >= 0:
                 state = game.reset()
-                print("\r#> Ep. {}/{} Step {}/{} Q sum {}".format(episode, n_episodes, step, max_steps, np.sum(self.Q)), end =" ")
-                self.save_log(game, episode)
+                self.save_log(episode)
                 state=game.reset()
 
         self.qvalues.to_csv('visualisation/qFunction.csv')
@@ -88,11 +88,11 @@ class QAgent(AgentInterface):
         # greedy action with random tie break
         return np.random.choice(np.where(self.Q[state] == mx)[0])
 
-    def save_log(self, game, episode):
+    def save_log(self, episode):
         self.qvalues = self.qvalues.append(
             {
                 'episode': episode,
-                'score': game.getScore()
+                'score': np.sum(self.Q)
             },
             ignore_index=True)
 

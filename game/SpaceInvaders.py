@@ -88,15 +88,15 @@ class SpaceInvaders():
         invaders_y = self.get_indavers_Y()
 
 
-        if invaders_y[0] > self.screen_height:
-            invaders_y[0] = self.screen_height - 1
+        if invaders_y[self.getLowerInvader()] > self.screen_height:
+            invaders_y[self.getLowerInvader()] = self.screen_height - 1
 
 
-        if invaders_x[0] > self.screen_width:
-            invaders_x[0] = self.screen_width - 1
+        if invaders_x[self.getLowerInvader()] > self.screen_width:
+            invaders_x[self.getLowerInvader()] = self.screen_width - 1
         
-        distance_x = int((player_x - invaders_x[0]) / 20)
-        distance_y = int((player_y - invaders_y[0]) / 50)
+        distance_x = int((player_x - invaders_x[self.getLowerInvader()]) / 20)
+        distance_y = int((player_y - invaders_y[self.getLowerInvader()]) / 50)
         shooting = int(self.get_bullet_state == "fire")
         state = (distance_x, distance_y, shooting)
         return state
@@ -243,3 +243,7 @@ class SpaceInvaders():
 
     def getScore(self):
         return self.score_val
+
+    def getLowerInvader(self):
+        max_value = max(self.get_indavers_Y())
+        return self.get_indavers_Y().index(max_value)
